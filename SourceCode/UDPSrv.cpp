@@ -23,34 +23,31 @@ int main()
 	SOCKET sock = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sock == INVALID_SOCKET)
 	{
-		cout << "socket´´½¨Ê§°Ü" << WSAGetLastError() << endl;
+		cout << "socketåˆ›å»ºå¤±è´¥" << WSAGetLastError() << endl;
 		return 0;
 	}
 
 	SOCKADDR_IN addrSrv;
-	addrSrv.sin_addr.S_un.S_addr = inet_addr("192.168.0.107");
+	addrSrv.sin_addr.S_un.S_addr =(htonl)(INADDR_ANY);
 	addrSrv.sin_family = AF_INET;
-	addrSrv.sin_port =6001;
-	int err1 = bind(sock, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
+	addrSrv.sin_port = htons(6000);
+	int err1=bind(sock, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
 	if (err1 == SOCKET_ERROR)
 	{
-		cout << "°ó¶¨Ê§°Ü" << endl;
+		cout << "ç»‘å®šå¤±è´¥" << endl;
 		return 0;
 	}
-	/*
+
 	SOCKADDR_IN addrCon;
 	addrCon.sin_addr.S_un.S_addr = inet_addr("192.168.0.107");
 	addrCon.sin_port = 6001;
 	addrCon.sin_family = AF_INET;
-	*/
 	while (1)
 	{
 		char s[50];
-		int n=recv(sock, s, sizeof(s), 0);
-		if (n > 0)
-		{
-			cout << s << endl;
-		}
+		cin >> s;
+		sendto(sock, s, strlen(s)+1, 0,(SOCKADDR *)&addrCon, sizeof(addrCon));
 	}
-	return 0; 
+
+	return 0;
 }
