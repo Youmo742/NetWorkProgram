@@ -23,7 +23,7 @@ int main()
 	SOCKET sock = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sock == INVALID_SOCKET)
 	{
-		cout << "socket´´½¨Ê§°Ü" << WSAGetLastError() << endl;
+		cout << "socketÂ´Â´Â½Â¨ÃŠÂ§Â°Ãœ" << WSAGetLastError() << endl;
 		return 0;
 	}
 
@@ -34,7 +34,7 @@ int main()
 	int err1 = bind(sock, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
 	if (err1 == SOCKET_ERROR)
 	{
-		cout << "°ó¶¨Ê§°Ü" << endl;
+		cout << "Â°Ã³Â¶Â¨ÃŠÂ§Â°Ãœ" << endl;
 		return 0;
 	}
 	/*
