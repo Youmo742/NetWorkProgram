@@ -69,4 +69,41 @@ SOCKET sockConn = accept(sock, (SOCKADDR *)&addrClient, &len);
 		cout << recvBuff << endl;
 		
 ```
+------------------
+7 关闭连接和释放套接字   
+```C++
+closesocket(sockConn);
+WSACleanup();
+```
+### 至此，服务器端建立成功   
 
+#### 客户端的建立   
+
+------------------------
+1 加载套接字库
+
+---------------------
+
+2 创建套接字
+
+--------------------
+
+3 建立与服务器端的连接   
+
+-----------------------------
+```C++
+connect(sockClient, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
+````
+------------------------------
+4 发送和接受数据
+```C++
+char recvBuff[50];
+recv(sockClient, recvBuff, sizeof(recvBuff), 0);
+
+har sendBuff[50];
+send(sockClient, sendBuff, strlen(sendBuff) + 1, 0);
+```
+----------------------
+5 关闭连接和释放套接字   
+
+-----------------------
