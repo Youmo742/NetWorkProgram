@@ -1,6 +1,7 @@
 #ifndef HEADERS_H
 #define HEADERS_H
 #include <iostream>
+#include<string>
 
 #ifdef _WIN32
     #include <windows.h>
