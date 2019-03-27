@@ -12,7 +12,7 @@ int main()
 	int err1 = WSAStartup(wVersionrequsted, &wsadata);
 	if (err1 != 0)
 	{
-		cout << "¼ÓÔØÌ×½Ó×Ö¿âÊ§°Ü" << endl;
+		cout << "åŠ è½½å¥—æ¥å­—åº“å¤±è´¥" << endl;
 		return 0;
 	}
 	if (LOBYTE(wsadata.wVersion) != 2 || HIBYTE(wsadata.wVersion != 2))
@@ -24,7 +24,7 @@ int main()
 	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == INVALID_SOCKET)
 	{
-		cout << "µ÷ÓÃsockÊ§°Ü" << endl;
+		cout << "è°ƒç”¨sockå¤±è´¥" << endl;
 		return 0;
 	}
 
@@ -36,7 +36,7 @@ int main()
 	int err2 = bind(sock, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
 	if (err2 == SOCKET_ERROR)
 	{
-		cout << "°ó¶¨Ê§°Ü" << endl;
+		cout << "ç»‘å®šå¤±è´¥" << endl;
 		return 0;
 	}
 
