@@ -1,4 +1,3 @@
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <stdio.h>
@@ -19,7 +18,6 @@
 #define SERVERIP "127.0.0.1"
 #define LISTEN_QUEUE 10
 #define BUFFER_SIZE 1024
-//服务器使用select模型，作为
 int test()
 {
     std::vector<int>v;
@@ -52,18 +50,24 @@ int test()
             close(listenfd);
             exit(RT_ERR);
     }
-    fprintf(stdout, "The server IP is %s, listen on port: %d\n", inet_ntoa(serveraddr.sin_addr), ntohs(serveraddr.sin_port));
+    fprintf(stdout, "The server IP is %s, listen on port: %d\n",inet_ntoa(serveraddr.sin_addr), ntohs(serveraddr.sin_port));
 
-    fd_set readfdset;
+    fd_set readfdset;//可读集合
     while(1)
     {
-        FD_ZERO(&readfdset);
-        for(auto fd:v)
+        FD_ZERO(&readfdset);//将集合所有位清空
+        for(auto fd:v)//将每个客户端都置位1
         {
+            //为什么要这么做
+            //当有客户端加入的时候，如果立即FD_SET的话，就意味着，他已经有数据了，但是，万一没有，逻辑错误。
             FD_SET(fd, &readfdset);
         }
-        FD_SET(listenfd, &readfdset);
-
+        FD_SET(listenfd, &readfdset);//将监听套接字置位1
+/*
+对于select函数，传入的参数，在检查的时候，会进行修改，所以，当select返回的时候，readset就存的是，可以读的集合
+select检查的时候，只会去检查那些被置位1的套接字，如果不可读/写，则置位0
+所以，每一次循环的时候，都得将set中，我们希望检测的位置1。
+*/
         if(!(select(FD_SETSIZE, &readfdset, NULL, NULL, NULL) > 0))
         {
             fprintf(stderr, "select function failed.\n");
@@ -79,8 +83,8 @@ int test()
                 fprintf(stderr, "accept function failed.\n");
                 exit(RT_ERR);
             }
-            v.push_back(connsockfd);
-            fprintf(stdout, "It is a new session from IP:%s port:%d\n",inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
+            v.push_back(connsockfd);//将客户端加入数组中，遍历时，不需要从0-1024遍历
+            fprintf(stdout, "It is a new session from IP:%sport:%d\n",inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
         }
          for(int fd=listenfd+1;fd<FD_SETSIZE;fd++)
          {
@@ -104,4 +108,3 @@ int test()
     close(listenfd);
     return 0;
 }
-
